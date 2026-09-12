@@ -1,0 +1,52 @@
+// date.html（indexJSON）が読み込むJSONの雛形。
+// 実際のデータを書く際はコメントを全て削除してください（JSON.parseはコメント非対応）。
+{
+    "url": "date/?name=sample",
+
+    // 更新日時。null なら HTTP レスポンスの Last-Modified ヘッダーから自動取得する。
+    // 文字列を指定すればその値をそのまま表示する（旧: date）
+    "lastModified": null,
+
+    // ヘッダーの背景カバー画像（date.htmlのheaderに使う）。
+    // map.htmlと違い、9枚グリッドのギャラリー機能は無く、常に単独の1枚として扱われるため、
+    // urlは配列ではなく文字列1つでよい
+    "cover": {
+        "title": ["カバー用タイトル", "補足"],
+        "description": "カバー用の説明文",
+        "note": ["注記1", "注記2"],
+        "directory": "https://upload.wikimedia.org/wikipedia/",
+        "url": "it/d/d5/xxx.png"
+    },
+
+    // ページ本文の補足情報。markdownがあれば優先して読み込み、無ければnoteを直接表示
+    "info": {
+        "index": "目次（#readme nav h3）に表示するタイトル（省略可）",
+        "note": null,
+        "markdown": "./readme.md",
+        "links": [
+            { "text": "リンクテキスト", "url": "https://example.com", "target": "_blank" }
+        ]
+    },
+
+    // 目次のメニュー項目（date.jsのcreateMenuが読む）。
+    // クリックするとheaderの背景画像・タイトルがそのイベントのものに切り替わる。
+    // 季節イベント（date-event.js側が読むevents/eventsJSON）とは
+    // 同じキー名だが別物なので注意（③参照）
+    "events": [
+        {
+            "date": { "year": 2026, "month": 1, "date": [1, 3] }, // 表示用の日付ラベル（任意の組み合わせでよい）
+            "month": [1, 2], // 複数月にまたがる場合は上のdateの代わりにこちらを使う
+            "title": ["メニュー項目名", "English name"],
+            "description": "説明文",
+            "note": [
+                "毎年 MM月DD日 時間",
+                "month date every year"
+            ],
+            "cover": {
+                "directory": "https://archive.org/download/xxx/xxx.thumbs/",
+                "url": "20260101/001_000001.jpg"
+            },
+            "info": { "markdown": "path/to/page.md", "links": null }
+        }
+    ]
+}

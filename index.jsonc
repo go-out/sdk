@@ -1,0 +1,100 @@
+// map.html（collectionJSON）が読み込むJSONの雛形。
+// 実際のデータを書く際はコメントを全て削除してください（JSON.parseはコメント非対応）。
+{
+    // このJSON自身が対応するページのURL（自己参照・パス解決の基準に使う）
+    "url": "/map/",
+
+    // ページタイトル。[0]=表示名、[1]=補足（英語名など、省略可）
+    "title": ["表示タイトル", "Sub Title"],
+
+    // ページの説明文（<meta name="description">にも反映される）
+    "description": "このページの説明文",
+
+    // ヘッダーの背景カバー画像。ここで指定する1枚に加えて、
+    // features/line側にgooglePhotos・archiveの写真が合計9枚以上集まると、
+    // 自動的に9枚グリッドのギャラリー表示に切り替わる（map-cover.js）。
+    // dateページと違いurlは配列（複数指定するとその分だけギャラリーの母数に加算される）
+    "cover": {
+        "title": ["カバー用タイトル", "補足"],
+        "description": "カバー用の説明文",
+        "note": ["注記1", "注記2"],
+        "directory": "https://archive.org/download/xxx/xxx.thumbs/",
+        "url": ["20260101/001_000001.jpg"]
+    },
+
+    // ページ本文の補足情報。markdownがあれば優先して読み込み、無ければnoteを直接表示
+    "info": {
+        "markdown": "README.md",
+        "note": null,
+        "links": [
+            { "text": "リンクテキスト", "url": "https://example.com", "target": "_blank" }
+        ]
+    },
+
+    // 地図の初期表示設定。省略した場合はランダムな位置・ズームで開始する
+    "map": {
+        "center": [135.0, 34.65],                    // [経度, 緯度]
+        "bounds": [[122.9, 20.4], [154.0, 45.6]],    // [[南西], [北東]]（地図の可動範囲、任意）
+        "zoom": 4.44
+    },
+
+    // 季節イベント（date-event.js）。埋め込みたい場合はevents、
+    // 外部ファイル参照にしたい場合はeventsJSON（旧: date）を使う。両方の同時使用も可
+    "events": [
+        {
+            "date": { "month": 1, "date": [1, 3] },  // 数値配列 / "第三日曜日"などの文字列 / "毎" のいずれか
+            "title": ["行事名", "English name"],
+            "description": "行事の説明",
+            "note": ["補足1", "補足2"],
+            "info": { "markdown": "path/to/event.md", "links": null }
+        }
+    ],
+    "eventsJSON": ["./date.json"],
+
+    // 地図上のマーカー（GeoJSON Point Feature）。直接埋め込む場合はfeatures、
+    // 外部ファイル参照にしたい場合はfeaturesJSON
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [136.7, 34.49],
+                "address": "住所（座標だけで説明が無い場合の補助表示用、任意）"
+            },
+            "properties": {
+                "title": "スポット名",
+                "description": "説明文",
+                "note": ["補足1", "補足2"],
+                "links": [{ "text": "関連リンク", "url": "https://example.com", "target": "_blank" }],
+                "zoom": 15,
+                "icon": ["https://.../icon.png", "2rem", "2rem", 2],
+                "googlePhotos": [
+                    { "url": ["写真パス"], "year": 2026, "month": 1, "date": 1, "title": "写真タイトル" }
+                ],
+                "archive": [
+                    {
+                        "identifier": "archive.org識別子",
+                        "cover": "サムネイルパス",
+                        "files": ["ファイル名（拡張子抜き）"],
+                        "count": 3,
+                        "formats": ".ia.mp4",
+                        "year": 2026,
+                        "month": 1,
+                        "date": [1]
+                    }
+                ]
+            }
+        }
+    ],
+    "featuresJSON": ["./sub-area/index.json"],
+
+    // 地図上のルート線（GeoJSON LineString Feature）。使い方はfeatures/featuresJSONと同様
+    "line": [
+        {
+            "type": "Feature",
+            "geometry": { "type": "LineString", "coordinates": [[135.0, 34.6], [135.1, 34.7]] },
+            "properties": { "title": "ルート名", "description": "説明", "zoom": 8 }
+        }
+    ],
+    "lineJSON": ["./another-route.json"]
+}

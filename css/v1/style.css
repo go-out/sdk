@@ -1,0 +1,181 @@
+/* ==================================================
+   全ページ共通のベーススタイル
+   ================================================== */
+
+html {
+    height: -webkit-fill-available;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+input[type="button"],
+button[type="button"] {
+    appearance: none;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: inherit;
+}
+
+body {
+    margin: 0;
+    background: lemonchiffon;
+}
+
+/* ==================================================
+   ヘッダー（date.html / map.html 共通のベーススタイル）
+   ==================================================
+   両ページとも <header> 内に
+     <h1><u>長い日本語タイトル</u><strong>Go Out</strong></h1>
+   という構造を持つ（要素の並び順はページにより異なる）。
+   JS側でheaderにid="cover"を付与すると、背景画像つきのカバー表示状態に
+   切り替わる。グリッド状に複数枚並べる（map.html）か1枚のフル画像に
+   するか（date.html）など、カバー状態の詳細な見た目や、h2・#title など
+   ページ固有の要素にまつわるスタイルは各ページの個別CSS
+   （map.html: cover.css / date.html: date.css）側で追加指定している。
+   ================================================== */
+
+header#cover h1 {
+    font-family: "Kristina", "KikaiChokoku", "Zen Maru Gothic", sans-serif;
+}
+
+header h1 {
+    margin: 0;
+}
+
+/* カバー状態でない通常時のh1文字サイズ */
+header:not(#cover) h1 {
+    font-size: 100%;
+}
+
+/* h1内の<u>で囲われた文言（副題バッジ）の見た目 */
+header h1 u {
+    background: #fff;
+    color: #000;
+    text-decoration: none;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.5rem;
+}
+
+header#cover h1,
+header h1 strong {
+    display: flex;
+}
+
+/* カバー表示状態でh1内の<strong>（"Go Out"部分）を中央寄せに */
+header#cover h1 strong {
+    flex-flow: column;
+    justify-content: center;
+}
+
+/* 通常時（非カバー表示）のh1内<strong>のベースライン揃え。
+   ※ 現状のマークアップではstrongに子要素が無くalign-items自体は
+      効果を持たないが、将来的な変更に備えて残しています */
+header:not(#cover) h1 strong {
+    align-items: baseline;
+}
+
+header#cover h1,
+header:not(#cover) h1 strong {
+    gap: 0 0.5rem;
+    flex-wrap: wrap;
+}
+
+header#cover h1 {
+    align-items: center;
+    justify-content: space-between;
+    flex-flow: column;
+}
+
+/* カバー表示状態の背景画像コンテナとしての基本スタイル
+   （元は2箇所に分かれて重複定義されていたものを1つにまとめました） */
+header#cover {
+    background: lightskyblue;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    width: 100%;
+}
+
+/* カバー表示状態でh1を中央に重ねて表示する */
+header#cover h1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 1rem);
+    text-align: center;
+    z-index: 1;
+}
+
+/* カバー表示状態ではh1内の<u>バッジを少し小さくする。
+   ※ h1 small は現状どちらのページのマークアップにも存在せず、
+      今のところ効果を持たない（将来的な追加を見越して残しています） */
+header#cover h1 u,
+header#cover h1 small {
+    font-size: 75%;
+}
+
+@media screen and (max-width: 1000px) {
+    header#cover {
+        font-size: 2vw;
+    }
+}
+
+@media (orientation: portrait) {
+    header:not(#cover) h1 strong {
+        max-width: calc((100% / 3) * 2 - 1rem);
+    }
+
+    header:not(#cover) h1 u {
+        max-width: calc(100% / 3);
+    }
+}
+
+@media screen and (max-width: 550px) {
+    header#cover {
+        font-size: 2.75vw;
+    }
+}
+
+/* ==================================================
+   関連ページリンク（#links）
+   date.html（#readme section内）/ map.html（#collection article内）
+   の両方で使用
+   ================================================== */
+
+#links[hidden] {
+    display: none;
+}
+
+#links {
+    display: flex;
+    flex-flow: wrap;
+    place-items: start;
+    gap: 0.5rem;
+    place-self: end;
+    margin-top: 1rem;
+    padding: 0.25rem;
+}
+
+#links,
+#links::before {
+    width: 100%;
+}
+
+#links a {
+    padding: 0.25rem 0.5rem;
+    color: #000;
+    background: #fff;
+    text-decoration: none;
+    border-radius: 0.25rem;
+    box-shadow: 0.1rem 0.1rem #111, 0.2rem 0.2rem #111;
+}
+
+#links::before {
+    content: "関連ページ Related Pages";
+    text-decoration: underline wavy lightskyblue;
+}

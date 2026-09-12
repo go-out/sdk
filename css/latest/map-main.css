@@ -1,0 +1,242 @@
+/* ==================================================
+   map.html専用: 地図まわり全体のレイアウト
+   （#collection・#mapbox・マーカー・#list・#weatherなど）
+   ================================================== */
+
+h3 b:not(#month, #date),
+details summary {
+    background: lightskyblue;
+}
+
+h2 b,
+h3 b,
+details summary,
+#modal h3,
+#weather p u {
+    color: lemonchiffon;
+}
+
+h1#title strong,
+#list ul li b,
+#weather strong,
+#weather marquee {
+    color: lightskyblue;
+}
+
+#weather p u {
+    background: lightskyblue;
+    text-decoration: none;
+}
+
+.maplibregl-marker {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.maplibregl-marker.goout {
+    background: lemonchiffon;
+    color: lightskyblue;
+    border: solid 0.123rem;
+    border-radius: 50%;
+    width: 1.23rem;
+    height: 1.23rem;
+}
+
+.maplibregl-marker.goout:hover {
+    background: lightskyblue;
+    color: lemonchiffon;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: solid 0.15rem;
+}
+
+#weather p u {
+    border-radius: 0.25rem;
+}
+
+section#mapbox #map {
+    border-radius: 0.5rem;
+}
+
+summary {
+    font-family: "DiaPro", "KikaiChokoku", "Zen Maru Gothic", sans-serif;
+}
+
+h3 b {
+    font-size: 150%;
+}
+
+h3,
+details summary,
+#list ul li b {
+    font-size: 125%;
+}
+
+details summary b {
+    font-size: 111%;
+}
+
+#list ul li,
+#weather p u {
+    font-size: 90%;
+}
+
+#list ul li b {
+    font-weight: 555;
+}
+
+#list ul {
+    padding: 0;
+    list-style: inside none;
+}
+
+main article,
+main section,
+main section #notes p,
+details summary {
+    padding: 0.5rem;
+}
+
+#weather p u {
+    padding: 0.123rem 0.25rem;
+}
+
+#collection #notes {
+    padding: 0.25rem 0;
+}
+
+main#collection h3 {
+    padding-bottom: 0.5rem;
+}
+
+#weather p {
+    margin: 1rem 0.75rem;
+}
+
+#weather marquee {
+    margin-bottom: 0.25rem;
+}
+
+main#collection h3 {
+    transform: skew(0deg, -2.5deg);
+}
+
+main {
+    position: relative;
+}
+
+main,
+#weather,
+#weather p,
+#list ul li {
+    display: flex;
+}
+
+details summary b {
+    display: inline-block;
+    margin: 0.05rem 0.5rem;
+}
+
+#weather[hidden] {
+    display: none;
+}
+
+#list ul li {
+    gap: 0.25rem;
+}
+
+#weather p {
+    gap: 0.5rem;
+    align-items: baseline;
+}
+
+#list ul li,
+#weather p {
+    flex-flow: column;
+}
+
+#weather {
+    flex-wrap: wrap;
+}
+
+#weather {
+    justify-content: space-between;
+}
+
+#list ul {
+    columns: 300px auto;
+    padding: 0.5rem;
+    margin: 0;
+}
+
+#list ul li {
+    break-inside: avoid;
+    padding: 0.5rem 0.5rem 0.75rem;
+}
+
+@media (orientation: portrait) {
+    main {
+        flex-flow: column;
+    }
+
+    main#collection {
+        flex-flow: column-reverse;
+    }
+
+    main section#mapbox {
+        height: 123vw;
+        max-height: calc(100dvh - 1rem);
+    }
+}
+
+@media (orientation: landscape) {
+    main {
+        flex-flow: row;
+    }
+
+    main#collection {
+        flex-flow: row-reverse;
+    }
+
+    main article,
+    main section {
+        width: 50%;
+        min-height: calc(100dvh - 0rem);
+    }
+
+    main section#mapbox {
+        position: sticky;
+        top: 0;
+        height: calc(100dvh - 0rem);
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .maplibregl-marker.goout {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    .maplibregl-marker.goout:hover {
+        width: 1.75rem;
+        height: 1.75rem;
+    }
+}
+
+#weather img {
+    width: 5rem;
+}
+
+#map,
+#weather marquee {
+    width: 100%;
+}
+
+#map {
+    height: 100%;
+}
+
+.maplibregl-marker.goout:hover {
+    cursor: pointer;
+}

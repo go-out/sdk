@@ -1,0 +1,6 @@
+.DS_Store
+
+# ローカルテスト用のファイル
+*.html
+*.json
+little-person.md

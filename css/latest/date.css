@@ -1,0 +1,309 @@
+/* ==================================================
+   date.html専用スタイル
+   ================================================== */
+
+/* --------------------------------------------------
+   ヘッダー（date.html専用のカバー表示・タイトル文字周り）
+   --------------------------------------------------
+   date.htmlのヘッダーは <h2>（キャッチコピー、縦書き）を持つ点、
+   タイトルのh1にid指定が無く、<u>バッジをfloatで右寄せする
+   ブロックベースのレイアウトになっている点がmap.htmlと異なる。
+   header/h1の両ページ共通のベーススタイルはstyle.cssを参照。
+   -------------------------------------------------- */
+
+header h2 {
+    font-family: "Kristina", "KikaiChokoku", "Zen Maru Gothic", sans-serif;
+}
+
+/* map.html側はh1にid="title"がありflexboxでレイアウトされるが、
+   date.htmlのh1はid無し・display:block基本のため、
+   <u>バッジをfloatで右寄せしてレイアウトしている */
+header:not(#cover) h1 u {
+    display: block;
+    float: right;
+}
+
+header h1,
+header h2 {
+    padding: 1rem;
+}
+
+header:not(#cover) h1 strong {
+    margin: 0.5rem 0;
+}
+
+header#cover h2 {
+    margin: 0 0.5rem;
+}
+
+header h2 {
+    display: flex;
+}
+
+header h2[hidden] {
+    display: none;
+}
+
+header:not(#cover) h2 {
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: baseline;
+}
+
+header#cover h2 {
+    flex-flow: column;
+}
+
+/* カバー表示状態でのタイトル文字サイズ調整。
+   date.htmlのh1にはid="title"が無いため、元のcover.css側では
+   h1:not(#title)という書き方でmap.htmlと区別していたが、
+   date.css内では常にdate.htmlのh1を指すのでシンプルにしている */
+header#cover h1 strong {
+    color: lightskyblue;
+    font-size: 200%;
+    line-height: 123%;
+    transform: scale(1, 1.75);
+    margin: 10rem 0 0;
+    text-shadow:
+        0.1rem -0.1rem 0 lemonchiffon,
+        -0.1rem -0.1rem 0 lemonchiffon,
+        -0.1rem 0.1rem 0 lemonchiffon,
+        0.1rem 0.1rem 0 lemonchiffon;
+}
+
+header#cover h1 {
+    font-size: 200%;
+}
+
+header#cover h2 {
+    writing-mode: vertical-lr;
+}
+
+header h2 {
+    color: lemonchiffon;
+    text-shadow:
+        0.05rem -0.05rem 0 lightskyblue,
+        -0.05rem -0.05rem 0 lightskyblue,
+        -0.05rem 0.05rem 0 lightskyblue,
+        0.05rem 0.05rem 0 lightskyblue;
+}
+
+@media screen and (width: 1280px) and (height: 720px) {
+    #latest {
+        display: none;
+    }
+}
+
+/* --------------------------------------------------
+   目次・README表示（#readme）
+   -------------------------------------------------- */
+
+#readme nav {
+    font-family: "Kristina", "KikaiChokoku", "Zen Maru Gothic", sans-serif;
+}
+
+#readme section div,
+#readme nav button:hover {
+    background: #fff;
+}
+
+#readme nav button {
+    color: #000;
+    text-decoration: none;
+}
+
+#latest {
+    color: #fff;
+    text-shadow: 0.1rem 0.1rem 0 #000;
+}
+
+#readme nav button ruby rt b {
+    color: lightskyblue;
+}
+
+#readme nav button ruby rt b {
+    font-size: 200%;
+}
+
+#readme nav {
+    font-size: 150%;
+}
+
+#latest,
+#readme nav button ruby {
+    font-size: 125%;
+}
+
+header h2 small,
+#readme nav h3,
+#readme nav button {
+    font-size: 100%;
+    font-weight: 500;
+}
+
+header h2 i,
+sup {
+    font-size: 75%;
+    font-style: normal;
+}
+
+#readme nav button ruby rt {
+    text-align: left;
+}
+
+#readme nav button {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#readme section div,
+#readme nav button {
+    border-radius: 0.25rem;
+}
+
+#readme nav h3 {
+    text-decoration: underline wavy lightskyblue;
+}
+
+#readme nav h3 {
+    margin: 0;
+}
+
+#readme nav button {
+    margin: 0.25rem 0;
+}
+
+#readme nav button ruby rt {
+    padding: 0.5rem 0;
+}
+
+#readme nav button ruby rt b {
+    padding: 0 0.5rem;
+}
+
+header nav,
+#readme nav,
+#readme nav h3,
+#readme section div {
+    padding: 0.5rem;
+}
+
+#readme section {
+    padding: 1rem;
+}
+
+#readme nav button {
+    padding: 1rem 0.5rem 0;
+}
+
+#readme {
+    position: relative;
+}
+
+header nav {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+header#cover h2 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    max-height: 95%;
+    z-index: 1;
+}
+
+#readme {
+    width: 100%;
+}
+
+#readme nav button {
+    max-width: 100%;
+}
+
+/* date.html専用のカバー表示（1枚のフル画像を全画面表示） */
+header#cover {
+    height: 100svh;
+    max-height: -webkit-fill-available;
+}
+
+#readme[hidden] {
+    display: none;
+}
+
+#readme,
+#readme nav {
+    display: flex;
+}
+
+#readme nav {
+    flex-flow: column;
+    align-items: start;
+    gap: 0.25rem;
+}
+
+#readme {
+    justify-content: space-between;
+    min-height: 100svh;
+}
+
+#readme {
+    flex-flow: wrap;
+    place-items: start;
+}
+
+#readme nav {
+    max-width: calc(100% / 3 * 2);
+}
+
+#readme section {
+    width: calc(100% / 3 - 1rem);
+    max-width: calc(100% / 3 - 1rem);
+}
+
+@media screen and (max-width: 1000px) {
+    #readme section {
+        padding: 0;
+    }
+
+    #readme nav,
+    #readme section {
+        width: calc(100% - 1rem);
+        max-width: calc(100% - 1rem);
+    }
+
+    #readme section {
+        margin: 0.5rem auto;
+    }
+}
+
+@media (orientation: landscape) {
+    #readme section {
+        position: sticky;
+        top: 0rem;
+        overflow: auto;
+        max-height: calc(100vh - 0rem);
+    }
+}
+
+@media (orientation: portrait) {
+    @media screen and (max-width: 525px) {
+        #readme nav {
+            font-size: 5vw;
+        }
+    }
+
+    #readme nav,
+    #readme section {
+        padding: 0;
+        margin: 0.5rem auto;
+    }
+
+    #readme nav {
+        width: calc(100% - 1rem);
+        max-width: calc(100% - 1rem);
+    }
+}

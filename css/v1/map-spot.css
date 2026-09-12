@@ -1,0 +1,323 @@
+/* ==================================================
+   map.html専用: 写真・動画ビューアモーダル（dialog#spot）のスタイル
+   ================================================== */
+
+dialog#spot h3 strong#month::after {
+    content: "月";
+}
+
+dialog#spot h3 strong#date::after {
+    content: "日";
+}
+
+dialog#spot h3 strong {
+    font-family: "Kristina", "KikaiChokoku","Zen Maru Gothic", sans-serif;
+}
+
+dialog#spot h2 {
+    font-family: "DiaPro", "KikaiChokoku","Zen Maru Gothic", sans-serif;
+}
+
+dialog#spot h3 strong::after,
+dialog#spot #thisDescription,
+dialog#spot button,
+dialog#spot #info {
+    font-family: "KikaiChokoku","Zen Maru Gothic", sans-serif;
+}
+
+dialog#spot h2 strong,
+dialog#spot h3 strong {
+    font-size: 333%;
+}
+
+dialog#spot h2,
+dialog#spot h3 {
+    font-size: 222%
+}
+
+dialog#spot #thisDescription {
+    font-size: 123%;
+}
+
+dialog#spot button {
+    font-size: 111%;
+}
+
+dialog#spot h3 strong::after {
+    font-size: 25%;
+}
+
+dialog#spot h2 strong {
+    line-height: 123%;
+}
+
+dialog#spot div {
+    background: #111;
+}
+
+dialog#spot {
+    background: lemonchiffon;
+}
+
+dialog#spot h2 strong,
+dialog#spot h3 strong {
+    color: lemonchiffon;
+}
+
+dialog#spot #thisDescription,
+dialog#spot h3 strong::after {
+    color: lightskyblue;
+}
+
+dialog#spot h2 small#year {
+    color: #fff;
+}
+
+dialog#spot aside a {
+    background: #fff;
+    color: #000;
+    text-decoration: none;
+    box-shadow: 0.1rem 0.1rem #111, 0.2rem 0.2rem #111;
+    border-radius: 0.25rem;
+}
+
+dialog#spot {
+    padding: 0;
+    overflow: auto;
+}
+
+dialog#spot button,
+dialog#spot aside a {
+    padding: 0.25rem 0.5rem;
+}
+
+dialog#spot nav,
+dialog#spot #info section,
+dialog#spot #info aside {
+    padding: 0.75rem;
+}
+
+dialog#spot h2 {
+    padding: 0.5rem 1rem;
+}
+
+dialog#spot h3,
+dialog#spot h3 strong::after {
+    padding: 1rem 1.5rem;
+}
+
+dialog#spot button,
+dialog#spot h2,
+dialog#spot h3,
+dialog#spot h3 strong::after {
+    margin: 0;
+}
+
+dialog#spot #thisDescription {
+    margin: 0.75rem;
+}
+
+dialog#spot #info section p {
+    margin: 0 0 1rem;
+}
+
+dialog#spot #info aside u {
+    margin-bottom: 0.25rem;
+}
+
+dialog#spot #vewAll label {
+    border: solid 2.5px #000;
+    border-radius: 0.25rem;
+    background: lightskyblue;
+}
+
+dialog#spot #vewAll input:checked+label {
+    border: solid 2.5px #fff;
+}
+
+dialog#spot h2,
+dialog#spot h2 strong,
+dialog#spot h3,
+dialog#spot #vewAll,
+dialog#spot #info,
+dialog#spot #info aside {
+    display: flex;
+}
+
+dialog#spot h3[hidden],
+dialog#spot #info section[hidden],
+dialog#spot #info aside[hidden],
+dialog#spot #vewAll input {
+    display: none;
+}
+
+dialog#spot #vewAll {
+    gap: 0.5rem;
+    overflow: auto;
+}
+
+dialog#spot h2 strong,
+dialog#spot #info aside {
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+dialog#spot h2 strong {
+    flex-flow: column;
+}
+
+dialog#spot #info aside {
+    align-content: baseline;
+    flex-wrap: wrap;
+}
+
+dialog#spot h2 {
+    align-items: start;
+    justify-content: space-between;
+}
+
+dialog#spot #info aside u {
+    width: 100%;
+}
+
+dialog#spot {
+    width: calc(100% - 2rem);
+    max-width: 1280px;
+}
+
+dialog#spot div,
+dialog#spot h2,
+dialog#spot h3,
+dialog#spot button {
+    position: relative;
+}
+
+dialog#spot div,
+dialog#spot #vewAll label {
+    aspect-ratio: 16 / 9;
+    background-size: cover;
+    background-position: center;
+    background-origin: content-box;
+}
+
+dialog#spot canvas,
+dialog#spot nav {
+    position: absolute;
+}
+
+dialog#spot canvas,
+dialog#spot nav {
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+dialog#spot button,
+dialog#spot h2,
+dialog#spot h3,
+dialog#spot nav {
+    z-index: 1;
+}
+
+dialog#spot button {
+    appearance: none;
+    background: lemonchiffon;
+    border: none;
+    color: lightskyblue;
+    outline: none;
+}
+
+dialog#spot button::after {
+    content: " (閉じる)";
+    font-size: 75%;
+}
+
+dialog#spot button {
+    text-align: justify;
+    text-align-last: justify;
+}
+
+dialog#spot canvas,
+dialog#spot button,
+dialog#spot nav,
+dialog#spot #vewAll label video {
+    width: 100%;
+}
+
+dialog#spot canvas,
+dialog#spot #vewAll label video {
+    height: 100%;
+    object-fit: cover;
+}
+
+@media (orientation: landscape) {
+    dialog#spot #info {
+        flex-wrap: nowrap;
+        flex-flow: row;
+        gap: 1rem;
+    }
+
+    dialog#spot #info aside {
+        max-width: 45%;
+    }
+
+    @media screen and (max-width: 1280px) {
+        dialog#spot div {
+            font-size: 1.5vw;
+        }
+
+        dialog#spot h2 {
+            font-size: 175%;
+        }
+
+        dialog#spot #vewAll label {
+            max-height: 10vw;
+        }
+    }
+}
+
+@media (orientation: portrait) {
+    dialog#spot #info {
+        flex-flow: column;
+        gap: 0.5rem;
+    }
+
+    dialog#spot #info section {
+        min-width: 100%;
+    }
+
+    @media screen and (max-width: 720px) {
+        dialog#spot div {
+            font-size: 2vw;
+        }
+
+        dialog#spot h2 {
+            font-size: 150%;
+        }
+
+        dialog#spot div,
+        dialog#spot #vewAll label {
+            aspect-ratio: 4 / 5;
+        }
+
+        dialog#spot #vewAll label {
+            max-height: 20vw;
+        }
+    }
+}
+
+@media screen and (width: 1280px) and (height:720px) {
+    dialog#spot {
+        border: none;
+        border-radius: 0;
+        margin: 0;
+        width: 100vw;
+        height: 100vh;
+        max-width: 100vw;
+        max-height: 100vh;
+    }
+
+    dialog#spot button::after {
+        display: none;
+    }
+}
