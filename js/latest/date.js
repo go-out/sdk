@@ -1,4 +1,4 @@
-import {fetchJSON} from "./common.js";
+import {fetchJSON, setCanonical, setStructuredData} from "./common.js";
 
 async function indexJSON(requestURL) {
     const index = await fetchJSON(requestURL);
@@ -92,6 +92,16 @@ function coverTitle(obj) {
 // header/#coverの切り替え：cover.hidden ではなく header.id = "cover" を付け外しする方式
 function createCover(obj) {
     const header = document.querySelector("header");
+
+    // SEO: canonical URLとJSON-LD構造化データ
+    setCanonical(location.href);
+    setStructuredData({
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": obj.cover && obj.cover.title ? obj.cover.title[0] : undefined,
+        "description": obj.cover ? obj.cover.description : undefined
+    });
+
     if (obj.cover) {
         coverTitle(obj.cover);
         if (obj.cover.title) {

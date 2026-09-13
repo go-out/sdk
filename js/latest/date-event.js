@@ -1,4 +1,20 @@
-import {fetchJSON, renderInfo, renderEventDetails, siki, sikiNow} from "./common.js";
+import {fetchJSON, renderInfo, renderEventDetails} from "./common.js";
+
+const siki = [
+    ["January", "冬", "winter"],
+    ["February", "冬", "winter"],
+    ["March", "春", "spring"],
+    ["April", "春", "spring"],
+    ["May", "春", "spring"],
+    ["June", "夏", "summer"],
+    ["July", "夏", "summer"],
+    ["August", "夏", "summer"],
+    ["September", "秋", "autumne"],
+    ["October", "秋", "autumne"],
+    ["November", "秋", "autumne"],
+    ["December", "冬", "winter"]
+];
+const sikiNow = siki[new Date().getMonth()][2];
 
 // HTML側の静的なラジオボタンのid（#events fieldset内）と対応
 const TAB_IDS = ["spring", "summer", "autumne", "winter", "all"];

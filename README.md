@@ -1,0 +1,27 @@
+# sdk
+
+Go Out組織のデジタル地図サイト群が共有して読み込む、JS/CSSのフレームワーク（SDK）です。
+各サイト（地域ごとのリポジトリ）は、このリポジトリが公開するファイルを絶対URLで読み込んで動作します。
+
+## 使い方
+
+各サイトのHTMLから、必要なファイルを直接読み込みます。
+
+```html
+<script type="module" src="https://go-out.github.io/sdk/js/v1/map.js"></script>
+<link rel="stylesheet" href="https://go-out.github.io/sdk/css/v1/main.css">
+```
+
+- 常に最新を追従したい場合は、パスの`v1`部分を`latest`に置き換える
+- バージョンを固定したい場合は、`v1`（`v2`...）のまま使う
+- CSSとJSはそれぞれ独立したバージョン番号で管理している（更新頻度が異なるため）
+
+バージョニングの運用ルールは [CHANGELOG.md](./CHANGELOG.md) を参照してください。
+
+## JSONの書き方
+
+各サイトが読み込むJSONの雛形（コメント付き）は `templates/map.jsonc`・`templates/date.jsonc` を参照してください。実データを書く際はコメント行を削除して使います。
+
+## 開発・動作確認
+
+VS Codeの「Live Server」拡張でローカル確認しています。ローカル確認用の`*.html`・`*.json`・`little-person.md`はこのリポジトリには含めていません（`.gitignore`参照）。実際のサイト構築は、別のテンプレートリポジトリ側で行います。

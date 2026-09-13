@@ -1,30 +1,34 @@
-"use strict";
-
-export const siki = [
-    ["January", "冬", "winter"],
-    ["February", "冬", "winter"],
-    ["March", "春", "spring"],
-    ["April", "春", "spring"],
-    ["May", "春", "spring"],
-    ["June", "夏", "summer"],
-    ["July", "夏", "summer"],
-    ["August", "夏", "summer"],
-    ["September", "秋", "autumne"],
-    ["October", "秋", "autumne"],
-    ["November", "秋", "autumne"],
-    ["December", "冬", "winter"]
-];
-export const sikiNow = siki[new Date().getMonth()][2];
-
 // 汎用JSON取得
 export async function fetchJSON(url) {
     const response = await fetch(new Request(url));
     if (!response.ok) {
-        // 404等のHTTPエラーを明示的に検知し、JSON.parseエラーを防ぐ
         throw new Error(`fetchJSON: ${url} -> HTTP ${response.status}`);
     };
     const text = await response.text();
     return JSON.parse(text);
+};
+
+// canonical URL（<link rel="canonical">）を設定する。無ければ要素ごと追加する
+export function setCanonical(url) {
+    let link = document.querySelector('link[rel="canonical"]');
+    if (!link) {
+        link = document.createElement("link");
+        link.rel = "canonical";
+        document.head.appendChild(link);
+    };
+    link.href = url;
+};
+
+// JSON-LD構造化データ（<script type="application/ld+json">）を設定する。
+// Googleの検索結果でのリッチ表示に使われる。無ければ要素ごと追加する
+export function setStructuredData(data) {
+    let script = document.querySelector('script[type="application/ld+json"]');
+    if (!script) {
+        script = document.createElement("script");
+        script.type = "application/ld+json";
+        document.head.appendChild(script);
+    };
+    script.textContent = JSON.stringify(data);
 };
 
 // info（markdown / note / links）をコンテナに描画する汎用処理

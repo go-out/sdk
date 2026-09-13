@@ -1,12 +1,12 @@
 // maplibreglはmap.js自体では直接使わないため、ここではimportしない
 // （必要なmap-embed.js/map-features.js側でそれぞれ直接importしている）
-import {fetchJSON, renderInfo} from "./common.js";
+import {fetchJSON, renderInfo, setCanonical, setStructuredData} from "./common.js";
 import {map, mapReady, setInitialMapSettings} from "./map-embed.js";
 import {processFeatures} from "./map-features.js";
 import {processLines} from "./map-line.js";
 import {processCover} from "./map-cover.js";
 import {processEvents} from "./date-event.js";
-import {openSpotOrEvent, centerOfItem} from "./map-spot.js";
+import {openSpotOrEvent, centerOfItem} from "./map-click.js";
 import {weatherAPI} from "./weather.js";
 
 // mapページのJSONを取得してマップを構築
@@ -54,6 +54,22 @@ async function createMap(obj) {
     renderInfo(obj.info, {
         notes: document.querySelector("#notes"),
         links: document.querySelector("#links")
+    });
+
+    // SEO: canonical URLとJSON-LD構造化データ
+    setCanonical(location.href);
+    setStructuredData({
+        "@context": "https://schema.org",
+        "@type": "Place",
+        "name": obj.title ? obj.title[0] : undefined,
+        "description": obj.description,
+        ...(obj.map && obj.map.center ? {
+            "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": obj.map.center[1],
+                "longitude": obj.map.center[0]
+            }
+        } : {})
     });
 
     // obj.mapの値（center/zoom/bounds）をそのまま初期表示に使う
