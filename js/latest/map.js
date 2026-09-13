@@ -6,7 +6,7 @@ import {processFeatures} from "./map-features.js";
 import {processLines} from "./map-line.js";
 import {processCover} from "./map-cover.js";
 import {processEvents} from "./date-event.js";
-import {openSpotOrEvent, centerOfItem} from "./map-click.js";
+import {openSpotOrEvent, centerOfItem} from "./map-spot.js";
 import {weatherAPI} from "./weather.js";
 
 // mapページのJSONを取得してマップを構築
