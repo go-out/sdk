@@ -4,7 +4,18 @@ import {fetchJSON} from "./common.js";
 import {map} from "./map-embed.js";
 import {openSpotOrEvent} from "./map-spot.js";
 
+// coordinates（[lng, lat]）がbounds（[[west, south], [east, north]]）の範囲内かどうか。
+// boundsが指定されていない場合は常にtrue（絞り込みなし）
+function isWithinBounds(coordinates, bounds) {
+    if (!bounds) return true;
+    const [[west, south], [east, north]] = bounds;
+    const [lng, lat] = coordinates;
+    return lng >= west && lng <= east && lat >= south && lat <= north;
+};
+
 // obj.features / obj.featuresJSON からfeaturesAllArrを組み立て、地図上にマーカーを描写する。
+// obj.featuresJSON側から読み込むfeatureのみ、obj.map.boundsの範囲外なら除外する
+// （obj.features直接埋め込み分は、明示的に選ばれたものとして絞り込み対象にしない）。
 // 呼び出し側であらかじめmapReadyを待ってから呼ぶこと（mapが未生成の状態では使えない）。
 export async function processFeatures(obj) {
     const featuresAllArr = [];
@@ -23,10 +34,15 @@ export async function processFeatures(obj) {
     };
 
     if (obj.featuresJSON) {
+        const bounds = obj.map && obj.map.bounds;
         for (const json of obj.featuresJSON) {
             const index = await fetchJSON(json);
             if (index.features) {
-                featuresAllArr.push(...index.features);
+                for (const feature of index.features) {
+                    if (isWithinBounds(feature.geometry.coordinates, bounds)) {
+                        featuresAllArr.push(feature);
+                    };
+                };
             };
         };
     };
@@ -75,6 +91,7 @@ function addMarker(feature) {
         .setLngLat(thisGeo)
         .addTo(map);
 
+    // クリック時のモーダル表示・地図移動はmap-spot.jsに共通化
     el.addEventListener("click", () => {
         openSpotOrEvent(feature, thisGeo);
     }, false);

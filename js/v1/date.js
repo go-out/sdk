@@ -1,9 +1,9 @@
 import {fetchJSON, setCanonical, setStructuredData} from "./common.js";
 
-async function indexJSON(requestURL) {
+async function indexJSON(requestURL, basePath = "./") {
     const index = await fetchJSON(requestURL);
-    createCover(index);
-    createMenu(requestURL, index);
+    createCover(index, basePath);
+    createMenu(requestURL, index, basePath);
 };
 
 async function fetchText(url) {
@@ -90,7 +90,11 @@ function coverTitle(obj) {
 };
 
 // header/#coverの切り替え：cover.hidden ではなく header.id = "cover" を付け外しする方式
-function createCover(obj) {
+// path: sub-resource（cover.directory・info.markdown・links等）を解決する際の
+// プレフィックス。呼び出し元（date/index.htmlのブートストラップ処理）が
+// ?map=（他ディレクトリのdate.jsonを覗きに行く）か?id=（同ディレクトリ内）かで
+// 決めて渡す
+function createCover(obj, path = "./") {
     const header = document.querySelector("header");
 
     // SEO: canonical URLとJSON-LD構造化データ
@@ -112,12 +116,7 @@ function createCover(obj) {
             };
         };
 
-        let directory, path = "";
-        if (~location.pathname.indexOf(obj.url)) {
-            if (obj.path) {
-                path = obj.path;
-            };
-        };
+        let directory;
 
         if (obj.cover.url) {
             header.id = "cover";
@@ -182,15 +181,8 @@ function readmeThis(path, info, obj) {
     };
 };
 
-async function createMenu(json, obj) {
+async function createMenu(json, obj, path = "./") {
     const latestUpdate = document.querySelector("#latest");
-
-    let path = "";
-    if (~location.pathname.indexOf(obj.url)) {
-        if (obj.path) {
-            path = obj.path;
-        };
-    };
 
     if (!obj.lastModified) {
         const modified = getModified(await gateDate(json));
@@ -202,7 +194,7 @@ async function createMenu(json, obj) {
     const readmeH3 = document.querySelector("#readme nav h3");
     readmeH3.addEventListener("click", (e) => {
         e.preventDefault();
-        createCover(obj);
+        createCover(obj, path);
 
         if (obj.cover.url) {
             document.querySelector("header").scrollIntoView({top: 0, behavior: "smooth"}, false);
@@ -289,7 +281,7 @@ async function createMenu(json, obj) {
 
                     document.querySelector("header").scrollIntoView({top: 0, behavior: "smooth"}, false);
                 } else {
-                    createCover(obj);
+                    createCover(obj, path);
                     if (obj.cover.url) {
                         if (obj.cover.directory) {
                             directory = path + obj.cover.directory;
