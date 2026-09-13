@@ -9,7 +9,7 @@ Go Out組織のデジタル地図サイト群が共有して読み込む、JS/CS
 
 ```html
 <script type="module" src="https://go-out.github.io/sdk/js/v1/map.js"></script>
-<link rel="stylesheet" href="https://go-out.github.io/sdk/css/v1/main.css">
+<link rel="stylesheet" href="https://go-out.github.io/sdk/css/v1/style.css">
 ```
 
 - 常に最新を追従したい場合は、パスの`v1`部分を`latest`に置き換える
@@ -17,6 +17,32 @@ Go Out組織のデジタル地図サイト群が共有して読み込む、JS/CS
 - CSSとJSはそれぞれ独立したバージョン番号で管理している（更新頻度が異なるため）
 
 バージョニングの運用ルールは [CHANGELOG.md](./CHANGELOG.md) を参照してください。
+
+## 構成
+
+```
+sdk/
+├── js/v1/
+│   ├── common.js        共通ユーティリティ（fetchJSON・renderInfo・SEO関連など）
+│   ├── date.js           dateページ（カレンダー）のエントリーポイント
+│   ├── date-event.js     季節イベントの絞り込み表示
+│   ├── map.js            mapページのエントリーポイント
+│   ├── map-embed.js      地図の埋め込み・初期設定
+│   ├── map-features.js   マーカー表示
+│   ├── map-line.js       ルートライン表示
+│   ├── map-cover.js      写真ギャラリー風のカバー表示
+│   ├── map-spot.js       クリック時のモーダル表示・地図移動
+│   └── weather.js        天気ウィジェット（OpenWeatherMap）
+├── css/v1/
+│   ├── style.css         全ページ共通のベーススタイル（header/h1のベース構造・#linksなど）
+│   ├── date.css          dateページ専用スタイル
+│   ├── date-event.css    季節イベントUI（#events）・詳細モーダルのスタイル
+│   ├── map-cover.css     mapページ専用: 写真ギャラリー風のヘッダー表示
+│   ├── map-main.css      mapページ専用: 地図まわり全体のレイアウト
+│   └── map-spot.css      写真・動画ビューアモーダル（dialog#spot）のスタイル
+├── assets/               favicon・フォント（バージョン管理対象外の共有静的資材）
+└── CHANGELOG.md
+```
 
 ## JSONの書き方
 
