@@ -18,11 +18,15 @@
         "url": "it/d/d5/xxx.png"
     },
 
-    // ページ本文の補足情報。markdownがあれば優先して読み込み、無ければnoteを直接表示
+    // ページ本文の補足情報。markdownがあれば優先して読み込み、無ければnoteを直接表示。
+    // markdown・cover.directoryなど相対パスを書く箇所は、必ずリポジトリルート基準で
+    // 書くこと（例: "date/xxx.md"）。date/index.htmlから直接見る場合と、
+    // 他ページのeventsJSON経由で読み込まれる場合とでは相対パスの解決基準が異なるため、
+    // ルート基準に統一しておかないと後者で参照がずれる
     "info": {
         "index": "目次（#readme nav h3）に表示するタイトル（省略可）",
         "note": null,
-        "markdown": "./readme.md",
+        "markdown": "date/readme.md",
         "links": [
             { "text": "リンクテキスト", "url": "https://example.com", "target": "_blank" }
         ]
@@ -37,11 +41,6 @@
             "date": { "year": 2026, "month": 1, "date": [1, 3] }, // 表示用の日付ラベル（任意の組み合わせでよい）
             "month": [1, 2], // 複数月にまたがる場合は上のdateの代わりにこちらを使う
             "title": ["メニュー項目名", "English name"],
-            "description": "説明文",
-            "note": [
-                "毎年 MM月DD日 時間",
-                "month date every year"
-            ],
             "cover": {
                 "directory": "https://archive.org/download/xxx/xxx.thumbs/",
                 "url": "20260101/001_000001.jpg"
