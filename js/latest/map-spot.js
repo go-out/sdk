@@ -77,6 +77,10 @@ export function centerOfItem(item) {
 
 // 以下、#spotダイアログ（写真・動画ビューア）の描画・操作ロジック
 
+// 動画のキャンバス描画ループ（requestAnimationFrame）のIDを保持する。
+// resetAll()から確実にcancelAnimationFrameできるよう、spotVideo関数の外に出している。
+let canvasFrameId = null;
+
 function thisSpot(info) {
     const spotNote = document.querySelector("#spot #info section"),
         spotLinks = document.querySelector("#spot #info aside"),
@@ -279,7 +283,17 @@ function spotVideo(info, videoArr) {
         canvas = document.querySelector("#spot #video"),
         canvasCtx = canvas.getContext("2d");
 
+    // 新しい動画を開く前に、前の動画の描画ループが残っていれば止めておく
+    // （複数のループが同じcanvasに同時に描き続けるのを防ぐ）
+    if (canvasFrameId) {
+        cancelAnimationFrame(canvasFrameId);
+        canvasFrameId = null;
+    };
+
     const coverImg = `${directory}${videoArr.identifier}/${videoArr.identifier}.thumbs/${videoArr.cover}`;
+    // 先にcoverの背景画像を表示してから、動画の読み込み・描画ループを始める
+    document.querySelector("#spot div").style.backgroundImage = `url(${coverImg})`;
+
     if (videoArr.files) {
         spotTitle.innerHTML = "▶️ " + thisTitle;
         canvas.hidden = false;
@@ -319,7 +333,7 @@ function spotVideo(info, videoArr) {
 
                 function canvasUpdate() {
                     canvasCtx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                    requestAnimationFrame(canvasUpdate);
+                    canvasFrameId = requestAnimationFrame(canvasUpdate);
                 };
 
                 input.addEventListener("change", () => {
@@ -349,7 +363,6 @@ function spotVideo(info, videoArr) {
         spotTitle.innerHTML = thisTitle;
         canvas.hidden = true;
     };
-    document.querySelector("#spot div").style.backgroundImage = `url(${coverImg})`;
 
     document.querySelector("#spot button.close").addEventListener("click", () => {
         document.querySelector("#spot").close();
@@ -362,7 +375,18 @@ function resetAll() {
     document.querySelector("#spot div").style.backgroundImage = null;
     document.querySelector("#spot h2").className = null;
     document.querySelector("#spot h3").hidden = false;
-    document.querySelector("#spot #video").hidden = true;
+
+    // 動画の描画ループを確実に止めてから、canvasの中身を消して隠す。
+    // これをしないと、次にダイアログを開いたときに前の動画の描画ループが
+    // 残ったまま動き続け、新しい動画のループと同時に描画されてしまう。
+    if (canvasFrameId) {
+        cancelAnimationFrame(canvasFrameId);
+        canvasFrameId = null;
+    };
+    const canvas = document.querySelector("#spot #video"),
+        canvasCtx = canvas.getContext("2d");
+    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+    canvas.hidden = true;
 
     for (const resetEl of document.querySelectorAll("#spot h2 strong, #spot h2 #year, #spot h3 #month, #spot h3 #date")) {
         resetEl.textContent = "";

@@ -282,16 +282,6 @@ async function createMenu(json, obj, path = "./") {
                     document.querySelector("header").scrollIntoView({top: 0, behavior: "smooth"}, false);
                 } else {
                     createCover(obj, path);
-                    if (obj.cover.url) {
-                        if (obj.cover.directory) {
-                            directory = path + obj.cover.directory;
-                        } else {
-                            directory = "https://lh3.googleusercontent.com/";
-                        };
-                        header.style.backgroundImage = `url(${directory}${obj.cover.url})`;
-                    } else {
-                        header.style.backgroundImage = null;
-                    };
                     document.querySelector("#readme section").scrollIntoView({top: 0, behavior: "smooth"}, false);
                 };
 
