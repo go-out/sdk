@@ -51,7 +51,7 @@ header:not(#cover) h2 {
 }
 
 header#cover h2 {
-    flex-flow: column;
+    flex-flow: column-reverse;
 }
 
 /* カバー表示状態でのタイトル文字サイズ調整。
