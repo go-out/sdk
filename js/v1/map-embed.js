@@ -21,17 +21,28 @@ function getRandomFloat(min, max) {
 
 let initialSettings = null; // setInitialMapSettingsが呼ばれるまでnull（＝まだ埋め込み待ち）
 
-// 地図を生成できない環境（WebGL非対応の古いブラウザ等）かどうか。
+// 地図を生成できない環境（WebGL2非対応の古いブラウザ等）かどうか。
 // 他ファイル（map-features.js等）がmapに触る前に判定できるよう公開する
 export let mapSupported = true;
+
+// WebGL2対応チェック。MapLibre GL JS v6はWebGL2が必須になり、
+// 以前あったmaplibregl.supported()はv6で廃止されたため自前でチェックする
+// （v6では非対応時、Mapコンストラクタが代わりにGPUInitializationErrorを投げる仕様）
+function isWebGL2Supported() {
+    try {
+        const canvas = document.createElement("canvas");
+        return !!(window.WebGL2RenderingContext && canvas.getContext("webgl2"));
+    } catch (e) {
+        return false;
+    };
+};
 
 // initialSettingsが揃った時点でのみ地図を生成する
 function tryEmbed() {
     if (initialSettings === null || map) return;
-    
-    /*
-    if (!maplibregl.supported()) {
-        // WebGL非対応などで地図を生成できない環境。エラーにせず、
+
+    if (!isWebGL2Supported()) {
+        // WebGL2非対応などで地図を生成できない環境。エラーにせず、
         // #map内に案内を出したうえで後続処理（マーカー等）に進める
         mapSupported = false;
         const container = document.querySelector("#map");
@@ -41,7 +52,6 @@ function tryEmbed() {
         resolveMapReady();
         return;
     };
-    */
 
     const center = initialSettings.center || [getRandomInt(0, 360), getRandomInt(-90, 90)];
     const zoom = initialSettings.zoom || getRandomFloat(1.5, 3);
