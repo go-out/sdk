@@ -1,4 +1,4 @@
-import * as maplibregl from "https://unpkg.com/maplibre-gl@6.9.0/dist/maplibre-gl.mjs";
+import maplibregl from "https://unpkg.com/maplibre-gl@6.9.0/dist/maplibre-gl.mjs"
 
 import {fetchJSON} from "./common.js";
 import {map, mapSupported} from "./map-embed.js";

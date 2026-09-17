@@ -2,7 +2,7 @@
 // map-features.jsが既に直接importしているのと同じ理由でここでも
 // 不要（ESモジュールはimportの解決を待ってから本体が実行されるため）。
 // 直接importすることでより単純になる。
-import * as maplibregl from "https://unpkg.com/maplibre-gl@6.9.0/dist/maplibre-gl.mjs";
+import maplibregl from "https://unpkg.com/maplibre-gl@6.9.0/dist/maplibre-gl.mjs";
 
 export let map;
 let resolveMapReady;
