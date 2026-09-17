@@ -2,7 +2,7 @@
 // map-features.jsが既に直接importしているのと同じ理由でここでも
 // 不要（ESモジュールはimportの解決を待ってから本体が実行されるため）。
 // 直接importすることでより単純になる。
-import maplibregl from "https://unpkg.com/maplibre-gl@6.9.0/dist/maplibre-gl.mjs";
+import * as maplibregl from "https://unpkg.com/maplibre-gl@6.9.0/dist/maplibre-gl.mjs";
 
 export let map;
 let resolveMapReady;
@@ -28,7 +28,8 @@ export let mapSupported = true;
 // initialSettingsが揃った時点でのみ地図を生成する
 function tryEmbed() {
     if (initialSettings === null || map) return;
-
+    
+    /*
     if (!maplibregl.supported()) {
         // WebGL非対応などで地図を生成できない環境。エラーにせず、
         // #map内に案内を出したうえで後続処理（マーカー等）に進める
@@ -40,6 +41,7 @@ function tryEmbed() {
         resolveMapReady();
         return;
     };
+    */
 
     const center = initialSettings.center || [getRandomInt(0, 360), getRandomInt(-90, 90)];
     const zoom = initialSettings.zoom || getRandomFloat(1.5, 3);
