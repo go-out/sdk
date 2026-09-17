@@ -1,7 +1,7 @@
 import * as maplibregl from "https://unpkg.com/maplibre-gl@6.9.0/dist/maplibre-gl.mjs";
 
 import {fetchJSON} from "./common.js";
-import {map} from "./map-embed.js";
+import {map, mapSupported} from "./map-embed.js";
 import {openSpotOrEvent} from "./map-spot.js";
 
 // coordinates（[lng, lat]）がbounds（[[west, south], [east, north]]）の範囲内かどうか。
@@ -22,7 +22,7 @@ export async function processFeatures(obj) {
 
     if (obj.features) {
         featuresAllArr.push(...obj.features);
-    } else {
+    } else if (mapSupported) {
         // 静的なfeaturesが無い場合は、右クリックで座標を取得できるようにしておく
         // （featuresJSON側の外部ファイルを作る際の下調べ用。obj.featuresJSONの有無に関わらず有効）
         map.on("contextmenu", (e) => {
@@ -49,8 +49,12 @@ export async function processFeatures(obj) {
 
     // 今後featuresAllArrを並び替える場合はここで行う想定（例: 日付順、地域順など）
 
-    for (const feature of featuresAllArr) {
-        addMarker(feature);
+    // 地図が無い環境ではマーカーを置く先が無いのでスキップする。
+    // featuresAllArr自体は#listの一覧表示に使うため、そのまま返す
+    if (mapSupported) {
+        for (const feature of featuresAllArr) {
+            addMarker(feature);
+        };
     };
 
     return featuresAllArr;

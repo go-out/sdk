@@ -1,7 +1,7 @@
 // route（obj.line / obj.lineJSON）関連の処理
 
 import {fetchJSON} from "./common.js";
-import {map} from "./map-embed.js";
+import {map, mapSupported} from "./map-embed.js";
 import {openLineClickEvent} from "./map-spot.js";
 
 export const ROUTE_SOURCE_ID = "route";
@@ -25,11 +25,12 @@ export async function processLines(obj) {
         };
     };
 
-    if (lineAllArr.length) {
+    // 地図が無い環境ではルートを描く先が無いのでスキップする。
+    // lineAllArr自体は#listの一覧表示に使うため、そのまま返す
+    if (lineAllArr.length && mapSupported) {
         addLine(lineAllArr);
     };
 
-    // 追加: 呼び出し側（map.js）でspotAllArrと合わせて#listの一覧を生成できるよう返す
     return lineAllArr;
 };
 
@@ -50,7 +51,7 @@ function addLine(lineArr) {
     map.on("mouseenter", ROUTE_LAYER_ID, () => map.getCanvas().style.cursor = "pointer");
     map.on("mouseleave", ROUTE_LAYER_ID, () => map.getCanvas().style.cursor = "");
 
-    // クリック時のモーダル表示・地図移動
+    // クリック時のモーダル表示・地図移動はmap-spot.jsに共通化。
     // ラインのproperties（note/links/archive/googlePhotos等）は、GeoJSONソースから
     // 地図クリックで取得する際にJSON文字列化されているため、map-spot.js側で復元する。
     map.on("click", ROUTE_LAYER_ID, (e) => {

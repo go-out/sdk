@@ -1,5 +1,5 @@
 import {renderInfo, shuffle} from "./common.js";
-import {map} from "./map-embed.js";
+import {map, mapSupported} from "./map-embed.js";
 
 // マーカー(map-features.js)・ライン(map-line.js)・一覧(map.jsの#list)の
 // クリック時に共通で使う、#spot / #thisEvent モーダルを開いて地図を移動する処理
@@ -44,8 +44,10 @@ export function openSpotOrEvent(item, center) {
         document.querySelector("#thisEvent").showModal();
     };
 
-    const zoom = properties.zoom || 17.5;
-    map.flyTo({center, essential: true, offset: [0, 0], zoom}, false);
+    if (mapSupported) {
+        const zoom = properties.zoom || 17.5;
+        map.flyTo({center, essential: true, offset: [0, 0], zoom}, false);
+    };
 };
 
 // ライン（GeoJSONソース）のクリックはmaplibreglの内部仕様上、
