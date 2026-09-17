@@ -1,15 +1,18 @@
 // date.html（indexJSON）が読み込むJSONの雛形。
 // 実際のデータを書く際はコメントを全て削除してください（JSON.parseはコメント非対応）。
+//
+// 【他リポジトリを参照するパスの書き方】
+// links等で別のリポジトリ（例: jingu, osaka, tokai...）を参照する場合は、
+// フルURLではなく "/jingu/index.json" のようにドメインルート基準
+// （先頭が"/"）で書く。本番・ローカル確認（きょうだいフォルダ構成時）の
+// どちらでも同じ文字列のまま正しく解決される。
 {
     "url": "date/?name=sample",
 
-    // 更新日時。null なら HTTP レスポンスの Last-Modified ヘッダーから自動取得する。
-    // 文字列を指定すればその値をそのまま表示する（旧: date）
+    // 更新日時。null なら HTTP レスポンスの Last-Modified ヘッダーから自動取得する
     "lastModified": null,
 
-    // ヘッダーの背景カバー画像（date.htmlのheaderに使う）。
-    // map.htmlと違い、9枚グリッドのギャラリー機能は無く、常に単独の1枚として扱われるため、
-    // urlは配列ではなく文字列1つでよい
+    // ヘッダーの背景カバー画像（date.htmlのheaderに使う）
     "cover": {
         "title": ["カバー用タイトル", "補足"],
         "description": "カバー用の説明文",
