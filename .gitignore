@@ -1,2 +1,8 @@
 .DS_Store
 .vscode
+
+# ローカルテスト用のファイル
+*.html
+*.json
+/date/
+little-person.md

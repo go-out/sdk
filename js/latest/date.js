@@ -1,9 +1,9 @@
 import {fetchJSON, setCanonical, setStructuredData} from "./common.js";
 
-async function indexJSON(requestURL, basePath = "./") {
+async function indexJSON(requestURL) {
     const index = await fetchJSON(requestURL);
-    createCover(index, basePath);
-    createMenu(requestURL, index, basePath);
+    createCover(index);
+    createMenu(requestURL, index);
 };
 
 async function fetchText(url) {
@@ -89,12 +89,12 @@ function coverTitle(obj) {
     };
 };
 
-// header/#coverの切り替え：cover.hidden ではなく header.id = "cover" を付け外しする方式
-// path: sub-resource（cover.directory・info.markdown・links等）を解決する際の
-// プレフィックス。呼び出し元（date/index.htmlのブートストラップ処理）が
-// ?map=（他ディレクトリのdate.jsonを覗きに行く）か?id=（同ディレクトリ内）かで
-// 決めて渡す
-function createCover(obj, path = "./") {
+// header/#coverの切り替え：cover.hidden ではなく header.id = "cover" を付け外しする方式。
+// markdown・cover.directory・linksの参照先はすべて "/リポジトリ名/..." という
+// ドメインルート基準で書く運用に統一したため、path（../ 等のプレフィックス）を
+// 計算して引き回す仕組みは不要になった（以前あったcreateCover/createMenu/
+// readmeThisのpath引数は廃止）。
+function createCover(obj) {
     const header = document.querySelector("header");
 
     // SEO: canonical URLとJSON-LD構造化データ
@@ -120,14 +120,11 @@ function createCover(obj, path = "./") {
 
         if (obj.cover.url) {
             header.id = "cover";
-            if (obj.cover.directory && obj.cover.url) {
-                if (!obj.cover.directory.indexOf("http")) {
-                    directory = obj.cover.directory;
-                } else {
-                    directory = path + obj.cover.directory;
-                };
+            if (obj.cover.directory) {
+                // http絶対URL、または"/"始まりのドメインルート基準パスの前提でそのまま使う
+                directory = obj.cover.directory;
                 header.style.backgroundImage = `url(${directory}${obj.cover.url})`;
-            } else if (!obj.cover.directory && obj.cover.url) {
+            } else {
                 directory = "https://lh5.googleusercontent.com/";
                 header.style.backgroundImage = `url(${directory}${obj.cover.url}=w1280-h720-k-no)`;
             };
@@ -141,10 +138,10 @@ function createCover(obj, path = "./") {
     };
 };
 
-function readmeThis(path, info, obj) {
+function readmeThis(info, obj) {
     let textAll = "";
     if (info.markdown) {
-        fetchText(path + info.markdown);
+        fetchText(info.markdown);
     } else {
         textAll = `${obj.title[0]} ${obj.title[1]}`;
         textAll += "<p>" + obj.note[1] + "<br>" + obj.note[0] + "</p>";
@@ -162,18 +159,12 @@ function readmeThis(path, info, obj) {
     if (info.links) {
         links.hidden = false;
         for (const eachLink of info.links) {
+            // urlはhttp絶対URL、または"/"始まりのドメインルート基準パスの前提のため、
+            // targetによる場合分けもプレフィックス付与も不要
             const a = document.createElement("a");
             a.textContent = eachLink.text;
             a.setAttribute("target", eachLink.target);
-            if (eachLink.target == "_blank") {
-                a.href = eachLink.url;
-            } else {
-                if (!eachLink.url.indexOf("http")) {
-                    a.href = eachLink.url;
-                } else {
-                    a.href = path + eachLink.url;
-                };
-            };
+            a.href = eachLink.url;
             links.appendChild(a);
         };
     } else {
@@ -181,7 +172,7 @@ function readmeThis(path, info, obj) {
     };
 };
 
-async function createMenu(json, obj, path = "./") {
+async function createMenu(json, obj) {
     const latestUpdate = document.querySelector("#latest");
 
     if (!obj.lastModified) {
@@ -194,7 +185,7 @@ async function createMenu(json, obj, path = "./") {
     const readmeH3 = document.querySelector("#readme nav h3");
     readmeH3.addEventListener("click", (e) => {
         e.preventDefault();
-        createCover(obj, path);
+        createCover(obj);
 
         if (obj.cover.url) {
             document.querySelector("header").scrollIntoView({top: 0, behavior: "smooth"}, false);
@@ -203,7 +194,7 @@ async function createMenu(json, obj, path = "./") {
         };
 
         if (obj.info) {
-            readmeThis(path, obj.info, obj.cover);
+            readmeThis(obj.info, obj.cover);
         };
     });
 
@@ -211,7 +202,7 @@ async function createMenu(json, obj, path = "./") {
         if (obj.info.index) {
             readmeH3.textContent = obj.info.index;
         };
-        readmeThis(path, obj.info, obj.cover);
+        readmeThis(obj.info, obj.cover);
     };
 
     const menu = document.querySelector("#readme nav");
@@ -268,25 +259,21 @@ async function createMenu(json, obj, path = "./") {
                     coverTitle(indexEach);
                     header.id = "cover";
                     if (indexEach.cover.directory) {
-                        if (!indexEach.cover.directory.indexOf("http")) {
-                            directory = indexEach.cover.directory;
-                        } else {
-                            directory = path + indexEach.cover.directory;
-                        };
+                        directory = indexEach.cover.directory;
                         header.style.backgroundImage = `url(${directory}${indexEach.cover.url})`;
-                    } else if (!indexEach.cover.directory) {
+                    } else {
                         directory = "https://lh3.googleusercontent.com/";
                         header.style.backgroundImage = `url(${directory}${indexEach.cover.url}=w1280-h720-k-no)`;
                     };
 
                     document.querySelector("header").scrollIntoView({top: 0, behavior: "smooth"}, false);
                 } else {
-                    createCover(obj, path);
+                    createCover(obj);
                     document.querySelector("#readme section").scrollIntoView({top: 0, behavior: "smooth"}, false);
                 };
 
                 if (indexEach.info) {
-                    readmeThis(path, indexEach.info, indexEach);
+                    readmeThis(indexEach.info, indexEach);
                 };
             });
         };

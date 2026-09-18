@@ -9,10 +9,13 @@
 {
     "url": "date/?name=sample",
 
-    // 更新日時。null なら HTTP レスポンスの Last-Modified ヘッダーから自動取得する
+    // 更新日時。null なら HTTP レスポンスの Last-Modified ヘッダーから自動取得する。
+    // 文字列を指定すればその値をそのまま表示する（旧: date）
     "lastModified": null,
 
-    // ヘッダーの背景カバー画像（date.htmlのheaderに使う）
+    // ヘッダーの背景カバー画像（date.htmlのheaderに使う）。
+    // map.htmlと違い、9枚グリッドのギャラリー機能は無く、常に単独の1枚として扱われるため、
+    // urlは配列ではなく文字列1つでよい
     "cover": {
         "title": ["カバー用タイトル", "補足"],
         "description": "カバー用の説明文",
@@ -22,14 +25,15 @@
     },
 
     // ページ本文の補足情報。markdownがあれば優先して読み込み、無ければnoteを直接表示。
-    // markdown・cover.directoryなど相対パスを書く箇所は、必ずリポジトリルート基準で
-    // 書くこと（例: "date/xxx.md"）。date/index.htmlから直接見る場合と、
-    // 他ページのeventsJSON経由で読み込まれる場合とでは相対パスの解決基準が異なるため、
-    // ルート基準に統一しておかないと後者で参照がずれる
+    // markdown・cover.directory・linksのurlは、必ず"/リポジトリ名/..."という
+    // ドメインルート基準（先頭が"/"）で書くこと。date/index.htmlから直接見る場合と、
+    // 他ページのeventsJSON経由で読み込まれる場合の両方があり、後者は一切
+    // プレフィックスを付けずそのまま使うため、"/"始まりで書いておかないと
+    // 参照がずれる（date.js側でパスを補う処理は行っていない）
     "info": {
         "index": "目次（#readme nav h3）に表示するタイトル（省略可）",
         "note": null,
-        "markdown": "date/readme.md",
+        "markdown": "/date/readme.md",
         "links": [
             { "text": "リンクテキスト", "url": "https://example.com", "target": "_blank" }
         ]
