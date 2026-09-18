@@ -5,9 +5,24 @@ Go Out組織にデジタル地図サイトを構築するための共有SDK（�
 
 ## [Unreleased]
 
-## [css v1 / js v1] - 2026-09-13
+## [css v1 / js v1] - 2026-09-18
+
 ### Added
-- 初期スタイル（`css/v1/`）・初期スクリプト（`js/v1/`）を公開
+- WebGL2非対応ブラウザ・端末向けのフォールバック表示
+- canonical URL・JSON-LD構造化データの出力（SEO対応）
+- コメント付きJSONテンプレート（`templates/map.jsonc`・`templates/date.jsonc`）
+
+### Changed
+- Mapbox GL JSからMapLibre GL JSに移行
+- 通常スクリプトからESモジュールに全面移行
+- `map.js`を`map-embed.js`・`map-features.js`・`map-line.js`・`map-cover.js`・`map-spot.js`・`date-event.js`に分割
+- 他リポジトリ参照のパスを、ドメインルート基準（`/リポジトリ名/...`）の書き方に統一
+- `date`（更新日）を`lastModified`に、`date`（季節イベント外部参照）を`eventsJSON`にリネーム
+
+### Fixed
+- ダイアログを閉じても動画キャンバスの描画ループが止まらない不具合
+- 季節イベントの絞り込みUIが、CSSにより`hidden`属性を無視して表示され続ける不具合
+- `info.links`のURLが`/`始まりの場合に余計なパスが付与される不具合
 ___
 
 ### リリース手順
