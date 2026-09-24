@@ -19,7 +19,6 @@ async function createMap(obj) {
     const thisTitle = document.querySelector("header #title strong"),
         thisBy = document.querySelector("header #title u"),
         thisDscription = document.querySelector("#collection #description b"),
-        spotOpen = document.querySelector("#spot"),
         spotClose = document.querySelector("#spot button.close");
 
     if (obj.title) {
@@ -96,10 +95,9 @@ async function createMap(obj) {
         weatherAPI(obj.map.center[1], obj.map.center[0]);
     }
 
-    if (spotClose && !spotClose.dataset.listenerBound) {
-        spotClose.addEventListener("click", () => spotOpen.close());
-        spotClose.dataset.listenerBound = "true";
-    };
+    // #spotのcloseボタンの処理（resetAll等を含む）はmap-spot.js側のbindSpotCloseOnceに
+    // 統合済み。ここで別途dataset.listenerBoundを使うガードを置くと、そちらのガードと
+    // 同じ目印（同一要素の同一dataset）を取り合って衝突するため、ここでは何もしない。
 
     const thisEventClose = document.querySelector("#thisEvent button.close");
     if (thisEventClose && !thisEventClose.dataset.listenerBound) {

@@ -50,19 +50,37 @@ export function openSpotOrEvent(item, center) {
     };
 };
 
+// ラインのproperties（note/links/archive/googlePhotos）を安全に復元する。
+// MapLibreのGeoJSONソースは、クリックで取得するfeature.propertiesの
+// 配列・オブジェクト値をJSON文字列化して返すことが多いが、
+// バージョン・描画経路によっては元の配列/オブジェクトのまま
+// 返ってくることもあるため、両方に対応する。
+// （文字列でない値をそのままJSON.parseに渡すと、String()変換を経由して
+// 不正なJSONになりSyntaxErrorになるため、事前にtypeofで判定する）
+function parseLineProperty(value) {
+    if (value === undefined || value === null || value === "") return null;
+    if (typeof value !== "string") return value;
+    try {
+        return JSON.parse(value);
+    } catch (error) {
+        console.error("openLineClickEvent: プロパティの解析に失敗しました", value, error);
+        return null;
+    };
+};
+
 // ライン（GeoJSONソース）のクリックはmaplibreglの内部仕様上、
 // propertiesのネストしたオブジェクト/配列（note・links・archive・googlePhotos）が
-// JSON文字列化された状態で渡ってくるため、ここで元のオブジェクトへ復元してから
+// JSON文字列化された状態で渡ってくることがあるため、ここで元のオブジェクトへ復元してから
 // openSpotOrEventへ渡す。
 export function openLineClickEvent(rawProperties, lngLat) {
     const properties = {
         title: rawProperties.title,
         description: rawProperties.description,
         zoom: rawProperties.zoom,
-        note: rawProperties.note ? JSON.parse(rawProperties.note) : null,
-        links: rawProperties.links ? JSON.parse(rawProperties.links) : null,
-        archive: rawProperties.archive ? JSON.parse(rawProperties.archive) : null,
-        googlePhotos: rawProperties.googlePhotos ? JSON.parse(rawProperties.googlePhotos) : null
+        note: parseLineProperty(rawProperties.note),
+        links: parseLineProperty(rawProperties.links),
+        archive: parseLineProperty(rawProperties.archive),
+        googlePhotos: parseLineProperty(rawProperties.googlePhotos)
     };
     openSpotOrEvent({properties, geometry: null}, [lngLat.lng, lngLat.lat]);
 };
@@ -244,10 +262,7 @@ function spotImage(info, imgArr) {
         };
     };
 
-    document.querySelector("#spot button.close").addEventListener("click", () => {
-        document.querySelector("#spot").close();
-        resetAll();
-    }, false);
+    bindSpotCloseOnce();
 };
 
 function spotVideo(info, videoArr) {
@@ -366,11 +381,22 @@ function spotVideo(info, videoArr) {
         canvas.hidden = true;
     };
 
-    document.querySelector("#spot button.close").addEventListener("click", () => {
+    bindSpotCloseOnce();
+};
+
+// #spotの閉じるボタンにclose処理を一度だけ登録する。
+// 以前はspotImage/spotVideoそれぞれが呼ばれるたびにaddEventListenerしており、
+// 表示を切り替えるたびにリスナーが積み上がっていた（stopAllVideosは動画が
+// 無いときも安全に呼べるノーオペレーションなので、共通化して問題ない）。
+function bindSpotCloseOnce() {
+    const closeButton = document.querySelector("#spot button.close");
+    if (closeButton.dataset.listenerBound) return;
+    closeButton.addEventListener("click", () => {
         document.querySelector("#spot").close();
         stopAllVideos();
         resetAll();
     }, false);
+    closeButton.dataset.listenerBound = "true";
 };
 
 function resetAll() {

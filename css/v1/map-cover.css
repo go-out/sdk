@@ -23,6 +23,10 @@ header#cover ul {
     display: flex;
 }
 
+header:not(#cover) h1#title {
+    place-items: flex-start;
+}
+
 header h1#title {
     gap: 1rem;
     justify-content: space-between;

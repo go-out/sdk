@@ -1,4 +1,4 @@
-import {fetchJSON, setCanonical, setStructuredData} from "./common.js";
+import {fetchJSON, setCanonical, setStructuredData, isSameAsCurrentPage} from "./common.js";
 
 async function indexJSON(requestURL) {
     const index = await fetchJSON(requestURL);
@@ -157,8 +157,8 @@ function readmeThis(info, obj) {
     const links = document.querySelector("#links");
     links.innerHTML = "";
     if (info.links) {
-        links.hidden = false;
         for (const eachLink of info.links) {
+            if (isSameAsCurrentPage(eachLink.url)) continue;
             // urlはhttp絶対URL、または"/"始まりのドメインルート基準パスの前提のため、
             // targetによる場合分けもプレフィックス付与も不要
             const a = document.createElement("a");
@@ -167,6 +167,7 @@ function readmeThis(info, obj) {
             a.href = eachLink.url;
             links.appendChild(a);
         };
+        links.hidden = links.childElementCount === 0;
     } else {
         links.hidden = true;
     };
