@@ -390,13 +390,13 @@ function spotVideo(info, videoArr) {
 // 無いときも安全に呼べるノーオペレーションなので、共通化して問題ない）。
 function bindSpotCloseOnce() {
     const closeButton = document.querySelector("#spot button.close");
-    if (closeButton.dataset.listenerBound) return;
+    if (closeButton.dataset.spotCloseBound) return;
     closeButton.addEventListener("click", () => {
         document.querySelector("#spot").close();
         stopAllVideos();
         resetAll();
     }, false);
-    closeButton.dataset.listenerBound = "true";
+    closeButton.dataset.spotCloseBound = "true";
 };
 
 function resetAll() {

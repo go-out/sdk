@@ -8,8 +8,11 @@ Go Out組織にデジタル地図サイトを構築するための共有SDK（�
 ## [js v1] - 2026-09-24
 
 ### Added
-- `common.js`に`isSameAsCurrentPage`を追加。`renderInfo`・`date.js`の`readmeThis`のリンク描画で、現在表示中のページと同一URL（`/`始まり・パラメーター付き、パラメーターの順不同を許容）のリンクは生成しない
+- `common.js`に`isSameAsCurrentPage`を追加。`renderInfo`・`date.js`の`readmeThis`のリンク描画で、現在表示中のページと同一URL（`/`始まり・パラメーター付き、パラメーターの順不同を許容）のリンクは生成しないようにした
 ### Fixed
+- `map.js`と`map-spot.js`が、`#spot button.close`の同じ`dataset.listenerBound`という目印を取り合っており、`map-spot.js`側の本来のcloseリスナー（`resetAll`・`stopAllVideos`を呼ぶ方）が一度も登録されず、マーカーをクリックするたびに写真・動画・リンクが蓄積していく不具合を修正。
+  `map.js`側の重複していた単純なcloseリスナーを削除し、`map-spot.js`側は専用のdatasetキー
+（`spotCloseBound`）に変更して、今後同様の衝突が起きないようにした
 - `map-features.js`のマーカークリックで`stopPropagation`しておらず、マーカーの真下にラインがある場合、ラインのクリック判定も同時に発火してしまっていた不具合を修正（マーカーを優先）
 - `map-spot.js`の`openLineClickEvent`で、地図上のラインをクリックした際、`note`・`links`が文字列化されずに渡ってくる場合に`JSON.parse`がSyntaxErrorになっていた不具合を修正
 - `map-spot.js`の`spotImage`・`spotVideo`が、閉じるボタンに毎回新しく`addEventListener`しており、スポットを見るたびにリスナーが積み上がっていた不具合を修正（一度だけ登録するよう統一）
