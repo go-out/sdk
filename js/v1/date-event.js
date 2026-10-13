@@ -109,10 +109,38 @@ function renderEvents(eventAllArr) {
     document.querySelectorAll("#events section").forEach(section => section.remove());
 
     const activeTabIds = new Set();
-
     for (const eventEach of eventAllArr) {
         const section = document.createElement("section");
         document.querySelector("#events").appendChild(section);
+
+        const tabIds = getTabIds(eventEach);
+        tabIds.forEach(id => {
+            section.classList.add(id);
+            activeTabIds.add(id);
+        });
+
+        if (eventEach.title && eventEach.note) {
+            const dateTitle = document.createElement("div");
+            section.appendChild(dateTitle);
+
+            const note = document.createElement("ruby");
+            note.textContent = `${eventEach.note[1]} `;
+            if (eventEach.note[0]) {
+                const rt = document.createElement("rt");
+                rt.textContent = eventEach.note[0];
+                note.appendChild(rt);
+            }
+            dateTitle.appendChild(note);
+
+            const h3 = document.createElement("h3");
+            h3.textContent = `${eventEach.title[0]} `;
+            if (eventEach.title[1]) {
+                const small = document.createElement("small");
+                small.textContent = eventEach.title[1];
+                h3.appendChild(small);
+            }
+            dateTitle.appendChild(h3);
+        }
 
         if (eventEach.info && (eventEach.info.note || eventEach.info.markdown)) {
             const moreinfo = document.createElement("button");
@@ -132,36 +160,34 @@ function renderEvents(eventAllArr) {
                 });
                 document.querySelector("#thisEvent").showModal();
             });
-        };
+        }
 
-        const tabIds = getTabIds(eventEach);
-        tabIds.forEach(id => {
-            section.classList.add(id);
-            activeTabIds.add(id);
-        });
-
-        renderEventDetails(section, eventEach);
-    };
+        if (eventEach.description) {
+            const p = document.createElement("p");
+            p.textContent = eventEach.description;
+            section.appendChild(p);
+        }
+    }
 
     const fieldset = document.querySelector("#events fieldset");
-
+    const fieldsetAll = document.querySelectorAll("#events fieldset label, #events fieldset input");
     if (activeTabIds.size <= 2) {
         if (fieldset) {
-            fieldset.hidden = true;
-        };
+            fieldsetAll.forEach(el => el.hidden = true);
+        }
         document.querySelectorAll("#events section").forEach(section => {
             section.hidden = false;
         });
         const emptyMsg = document.querySelector("#events p.no-events");
         if (emptyMsg) {
             emptyMsg.remove();
-        };
+        }
         return;
-    };
+    }
 
     if (fieldset) {
-        fieldset.hidden = false;
-    };
+        fieldsetAll.forEach(el => el.hidden = true);
+    }
 
     TAB_IDS.forEach(id => {
         const hasEvents = activeTabIds.has(id);

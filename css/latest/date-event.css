@@ -3,62 +3,64 @@
    詳細モーダル（dialog#thisEvent）のスタイル
    ================================================== */
 
-#events fieldset,
+dialog#thisEvent #thisLink {
+    padding: 1rem 0;
+}
+
+#events,
+dialog#thisEvent button.close {
+    padding: 0.5rem;
+}
+
+#events legend,
+#events label,
+dialog#thisEvent #thisInfo,
+dialog#thisEvent #thisLink::before,
+dialog#thisEvent #thisLink a {
+    padding: 0.25rem 0.5rem;
+}
+
+#events section {
+    padding: 0.5rem;
+}
+
+#events section ruby rt {
+    padding: 0.5rem 0;
+}
+
+dialog#thisEvent #thisLink {
+    padding-bottom: 0.5rem;
+}
+
+#events fieldset {
+    padding: 0.25rem;
+}
+
+#events section button {
+    margin: 0.5rem 0;
+}
+
 #events section h3,
-#events section ruby {
+#events section p {
+    margin: 0.5rem 0;
+}
+
+#events p.no-events {
+    margin: 1rem 0.75rem 1.5rem;
+}
+
+#events legend,
+#events section {
+    margin-bottom: 0.5rem;
+}
+
+#events fieldset,
+#events section {
     font-family: "Kristina", "KikaiChokoku", "Zen Maru Gothic", sans-serif;
 }
 
 dialog#thisEvent {
     font-family: "KikKikaiChokoku", "Zen Maru Gothic", sans-serif;
-}
-
-dialog#thisEvent button.close {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-}
-
-#events fieldset,
-dialog#thisEvent #thisLink {
-    display: flex;
-}
-
-#events fieldset,
-#events p.no-events {
-    column-span: all;
-}
-
-#events fieldset {
-    flex-wrap: wrap;
-}
-
-#events {
-    columns: 500px auto;
-}
-
-#events section {
-    break-inside: avoid;
-}
-
-#events fieldset {
-    gap: 0.25rem;
-}
-
-dialog#thisEvent #thisLink {
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.5rem;
-    max-width: 750px;
-}
-
-dialog#thisEvent #thisInfo {
-    margin: auto;
-    max-width: 750px;
-}
-
-#events section button {
-    font-family: inherit;
 }
 
 dialog#thisEvent button.close {
@@ -133,70 +135,29 @@ dialog#thisEvent #thisLink a {
     text-decoration: none;
 }
 
-dialog#thisEvent #thisLink {
-    padding: 1rem 0;
-}
-
-#events,
 dialog#thisEvent button.close {
-    padding: 0.5rem;
-}
-
-#events legend,
-#events label,
-dialog#thisEvent #thisInfo,
-dialog#thisEvent #thisLink::before,
-dialog#thisEvent #thisLink a {
-    padding: 0.25rem 0.5rem;
-}
-
-#events section ruby rt {
-    padding: 0.5rem 0;
+    position: fixed;
+    bottom: 0;
+    right: 0;
 }
 
 dialog#thisEvent #thisLink {
-    padding-bottom: 0.5rem;
+    display: flex;
 }
 
-#events section {
-    padding: 0.5rem 0.75rem;
-}
-
-#events fieldset {
-    padding: 0.25rem;
-}
-
-#events fieldset {
-    margin: 0 0 1rem;
-}
-
-#events section h3,
-#events section p {
-    margin: 0.5rem 0;
-}
-
-#events p.no-events {
-    margin: 1rem 0.75rem 1.5rem;
-}
-
-#events legend,
-#events section {
-    margin-bottom: 0.5rem;
-}
-
-#events section button {
-    float: right;
-}
-
-dialog#thisEvent button.close {
-    appearance: none;
-}
+/* ==================================================
+   四季の出来事（#events）
+   ================================================== */
 
 #events fieldset,
-#events section button,
-dialog#thisEvent,
-dialog#thisEvent button.close {
-    border: none;
+#events section {
+    display: flex;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+}
+
+#events section {
+    justify-content: space-between;
 }
 
 #events legend,
@@ -204,23 +165,63 @@ dialog#thisEvent button.close {
     border-radius: 0.25rem;
 }
 
-dialog#thisEvent button.close {
-    outline: none;
+#events input[type="radio"],
+#events section[hidden] {
+    display: none;
 }
 
-dialog#thisEvent #thisLink[hidden],
-#events fieldset[hidden],
-#events input[type="radio"] {
-    display: none;
+#events {
+    columns: 500px auto;
+}
+
+#events fieldset,
+#events p.no-events {
+    column-span: all;
+}
+
+#events section {
+    break-inside: avoid;
+}
+
+#events fieldset,
+#events section button {
+    border: none;
+    outline: none;
+    appearance: none;
+}
+
+#events section {
+    clear: both;
 }
 
 #events section button {
     border-radius: 50%;
-    display: block;
-    float: right;
     width: 4rem;
     height: 4rem;
     transform: rotate(15deg);
+}
+
+#events section div {
+    max-width: calc(100% - 5rem);
+}
+
+#events section p {
+    width: 100%;
+}
+
+/* ==================================================
+   四季の出来事（#events）
+   ================================================== */
+
+dialog#thisEvent #thisLink[hidden] {
+    display: none;
+}
+
+dialog#thisEvent,
+dialog#thisEvent button.close {
+    appearance: none;
+    border: none;
+    outline: none;
 }
 
 dialog#thisEvent::backdrop {
@@ -232,6 +233,18 @@ dialog#thisEvent #thisLink::before {
     content: "関連ページ";
     text-decoration: underline wavy;
     width: 100%;
+}
+
+dialog#thisEvent #thisLink {
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+    max-width: 750px;
+}
+
+dialog#thisEvent #thisInfo {
+    margin: auto;
+    max-width: 750px;
 }
 
 html:has(dialog[open]) {
